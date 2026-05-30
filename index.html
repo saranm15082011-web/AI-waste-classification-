@@ -1,189 +1,765 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Waste Classification Portfolio</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI Waste Classification - An intelligent system using Computer Vision and Camera access to identify and classify waste for better sustainability.">
+    <meta name="theme-color" content="#0f766e">
+    
+    <title>AI Waste Classification Portfolio</title>
+    
+    <style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family:Arial, sans-serif;
+    }
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, sans-serif;
-}
+    body{
+        background:#f4f7f9;
+        color:#333;
+        line-height:1.6;
+    }
 
-body{
-    background:#f4f7f9;
-    color:#333;
-}
+    header{
+        background:linear-gradient(135deg,#0f766e,#14b8a6);
+        color:white;
+        text-align:center;
+        padding:60px 20px;
+    }
 
-header{
-    background:linear-gradient(135deg,#0f766e,#14b8a6);
-    color:white;
-    text-align:center;
-    padding:60px 20px;
-}
+    header h1{
+        font-size:3rem;
+    }
 
-header h1{
-    font-size:3rem;
-}
+    header p{
+        margin-top:10px;
+        font-size:1.2rem;
+    }
 
-header p{
-    margin-top:10px;
-    font-size:1.2rem;
-}
+    nav{
+        background:#0f172a;
+        padding:15px;
+        text-align:center;
+        display:flex;
+        flex-wrap:wrap;
+        justify-content:center;
+        gap:10px;
+    }
 
-nav{
-    background:#0f172a;
-    padding:15px;
-    text-align:center;
-}
+    nav a{
+        color:white;
+        text-decoration:none;
+        padding:8px 16px;
+        font-weight:bold;
+        border-radius:4px;
+        transition:background-color 0.3s ease;
+    }
 
-nav a{
-    color:white;
-    text-decoration:none;
-    margin:0 15px;
-    font-weight:bold;
-}
+    nav a:hover,
+    nav a:focus{
+        background-color:#14b8a6;
+    }
 
-section{
-    padding:50px 10%;
-}
+    main{
+        max-width:1200px;
+        margin:0 auto;
+    }
 
-.card{
-    background:white;
-    padding:25px;
-    margin:20px 0;
-    border-radius:12px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.1);
-}
+    section{
+        padding:50px 10%;
+    }
 
-h2{
-    color:#0f766e;
-    margin-bottom:15px;
-}
+    .card{
+        background:white;
+        padding:25px;
+        margin:20px 0;
+        border-radius:12px;
+        box-shadow:0 2px 10px rgba(0,0,0,0.1);
+        transition:box-shadow 0.3s ease;
+    }
 
-ul{
-    padding-left:20px;
-}
+    .card:hover{
+        box-shadow:0 4px 20px rgba(0,0,0,0.15);
+    }
 
-footer{
-    background:#0f172a;
-    color:white;
-    text-align:center;
-    padding:20px;
-    margin-top:30px;
-}
+    h2{
+        color:#0f766e;
+        margin-bottom:15px;
+    }
 
-.highlight{
-    color:#14b8a6;
-    font-weight:bold;
-}
-</style>
+    h3{
+        color:#0f766e;
+        margin-top:20px;
+        margin-bottom:10px;
+    }
+
+    ul{
+        padding-left:20px;
+    }
+
+    li{
+        margin-bottom:8px;
+    }
+
+    footer{
+        background:#0f172a;
+        color:white;
+        text-align:center;
+        padding:20px;
+        margin-top:30px;
+    }
+
+    .highlight{
+        color:#14b8a6;
+        font-weight:bold;
+    }
+
+    /* Camera & Classification Styles */
+    .camera-container{
+        display:flex;
+        gap:20px;
+        flex-wrap:wrap;
+        justify-content:center;
+        align-items:flex-start;
+    }
+
+    .camera-section{
+        flex:1;
+        min-width:300px;
+        max-width:500px;
+    }
+
+    .upload-section{
+        flex:1;
+        min-width:300px;
+        max-width:500px;
+    }
+
+    video{
+        width:100%;
+        height:auto;
+        border-radius:12px;
+        background:#000;
+        display:block;
+        margin-bottom:15px;
+    }
+
+    canvas{
+        display:none;
+    }
+
+    .button-group{
+        display:flex;
+        gap:10px;
+        flex-wrap:wrap;
+        margin-bottom:15px;
+    }
+
+    button{
+        padding:12px 24px;
+        border:none;
+        border-radius:8px;
+        font-size:1rem;
+        font-weight:bold;
+        cursor:pointer;
+        transition:all 0.3s ease;
+    }
+
+    .btn-primary{
+        background:#14b8a6;
+        color:white;
+    }
+
+    .btn-primary:hover,
+    .btn-primary:focus{
+        background:#0f766e;
+        outline:2px solid #14b8a6;
+        outline-offset:2px;
+    }
+
+    .btn-danger{
+        background:#ef4444;
+        color:white;
+    }
+
+    .btn-danger:hover{
+        background:#dc2626;
+    }
+
+    .btn-secondary{
+        background:#64748b;
+        color:white;
+    }
+
+    .btn-secondary:hover{
+        background:#475569;
+    }
+
+    .file-input-wrapper{
+        position:relative;
+        display:inline-block;
+        overflow:hidden;
+    }
+
+    .file-input-wrapper input[type="file"]{
+        display:none;
+    }
+
+    .file-label{
+        display:block;
+        padding:12px 24px;
+        background:#14b8a6;
+        color:white;
+        border-radius:8px;
+        font-weight:bold;
+        cursor:pointer;
+        transition:background 0.3s ease;
+    }
+
+    .file-label:hover{
+        background:#0f766e;
+    }
+
+    .preview-img{
+        width:100%;
+        height:auto;
+        border-radius:12px;
+        margin-bottom:15px;
+    }
+
+    .result-box{
+        background:#e0f2f1;
+        border-left:5px solid #14b8a6;
+        padding:20px;
+        border-radius:8px;
+        margin-top:20px;
+    }
+
+    .result-box.error{
+        background:#fecaca;
+        border-left-color:#ef4444;
+    }
+
+    .result-box.success{
+        background:#d1fae5;
+        border-left-color:#10b981;
+    }
+
+    .waste-classification{
+        margin-top:20px;
+    }
+
+    .waste-item{
+        background:#f9fafb;
+        padding:15px;
+        margin:10px 0;
+        border-radius:8px;
+        border-left:4px solid #14b8a6;
+    }
+
+    .waste-item strong{
+        color:#0f766e;
+    }
+
+    .confidence-bar{
+        width:100%;
+        height:20px;
+        background:#e5e7eb;
+        border-radius:10px;
+        overflow:hidden;
+        margin-top:8px;
+    }
+
+    .confidence-fill{
+        height:100%;
+        background:linear-gradient(90deg, #14b8a6, #0f766e);
+        transition:width 0.3s ease;
+    }
+
+    .disposal-info{
+        background:#fffbeb;
+        border-left:4px solid #f59e0b;
+        padding:15px;
+        margin-top:15px;
+        border-radius:8px;
+    }
+
+    .disposal-info h4{
+        color:#d97706;
+        margin-bottom:10px;
+    }
+
+    .loading{
+        display:none;
+        text-align:center;
+        padding:20px;
+    }
+
+    .spinner{
+        border:4px solid #e5e7eb;
+        border-top:4px solid #14b8a6;
+        border-radius:50%;
+        width:40px;
+        height:40px;
+        animation:spin 1s linear infinite;
+        margin:0 auto;
+    }
+
+    @keyframes spin{
+        0%{transform:rotate(0deg);}
+        100%{transform:rotate(360deg);}
+    }
+
+    .status-message{
+        padding:15px;
+        margin:15px 0;
+        border-radius:8px;
+        display:none;
+    }
+
+    .status-message.info{
+        background:#dbeafe;
+        color:#1e40af;
+        display:block;
+    }
+
+    .status-message.error{
+        background:#fecaca;
+        color:#991b1b;
+        display:block;
+    }
+
+    .status-message.success{
+        background:#d1fae5;
+        color:#065f46;
+        display:block;
+    }
+
+    .camera-permission-alert{
+        background:#fef08a;
+        border-left:4px solid #eab308;
+        padding:15px;
+        margin:15px 0;
+        border-radius:8px;
+        display:none;
+    }
+
+    @media (max-width:768px){
+        header h1{
+            font-size:2rem;
+        }
+
+        section{
+            padding:30px 5%;
+        }
+
+        .camera-container{
+            flex-direction:column;
+        }
+
+        .camera-section,
+        .upload-section{
+            max-width:100%;
+        }
+
+        button{
+            font-size:0.9rem;
+            padding:10px 16px;
+        }
+    }
+    </style>
 </head>
 
 <body>
 
 <header>
     <h1>AI Waste Classification System</h1>
-    <p>Portfolio Project on Artificial Intelligence</p>
+    <p>Real-time Waste Detection with AI & Computer Vision</p>
 </header>
 
 <nav>
     <a href="#about">About</a>
+    <a href="#classifier">Classifier</a>
     <a href="#problem">Problem</a>
     <a href="#solution">Solution</a>
-    <a href="#cycle">AI Project Cycle</a>
-    <a href="#future">Future Scope</a>
+    <a href="#cycle">AI Cycle</a>
+    <a href="#future">Future</a>
 </nav>
 
-<section id="about">
-    <div class="card">
-        <h2>About the Project</h2>
-        <p>
-            AI Waste Classification is an intelligent system that uses
-            Artificial Intelligence and Computer Vision to identify
-            different types of waste such as plastic, paper, metal,
-            glass, and organic waste. The system helps improve waste
-            segregation and supports environmental sustainability.
-        </p>
-    </div>
-</section>
+<main>
+    <section id="classifier">
+        <div class="card">
+            <h2>🎥 Real-time Waste Classifier</h2>
+            <p style="margin-bottom:20px;color:#666;">Use your camera or upload an image to classify waste types instantly!</p>
+            
+            <div class="camera-container">
+                <!-- Camera Section -->
+                <div class="camera-section">
+                    <h3>Camera Detection</h3>
+                    <div class="camera-permission-alert" id="cameraAlert">
+                        ⚠️ Camera access is required for this feature. Please allow camera permissions.
+                    </div>
+                    
+                    <video id="video" autoplay playsinline></video>
+                    <canvas id="canvas"></canvas>
+                    
+                    <div class="button-group">
+                        <button class="btn-primary" id="startCameraBtn" onclick="startCamera()">📷 Start Camera</button>
+                        <button class="btn-secondary" id="captureCameraBtn" onclick="captureCamera()" style="display:none;">📸 Capture & Analyze</button>
+                        <button class="btn-danger" id="stopCameraBtn" onclick="stopCamera()" style="display:none;">⏹ Stop Camera</button>
+                    </div>
+                </div>
 
-<section id="problem">
-    <div class="card">
-        <h2>Problem Statement</h2>
-        <p>
-            Improper waste segregation leads to pollution, health
-            hazards, and inefficient recycling. Manual sorting is
-            time-consuming and prone to errors.
-        </p>
-    </div>
-</section>
+                <!-- File Upload Section -->
+                <div class="upload-section">
+                    <h3>Upload Image</h3>
+                    <p style="color:#666;margin-bottom:15px;font-size:0.95rem;">Or choose an image from your device</p>
+                    
+                    <div class="file-input-wrapper">
+                        <label for="fileInput" class="file-label">📁 Choose Image</label>
+                        <input type="file" id="fileInput" accept="image/*" onchange="handleFileUpload(event)">
+                    </div>
+                    
+                    <img id="uploadedImage" class="preview-img" style="display:none;">
+                </div>
+            </div>
 
-<section id="solution">
-    <div class="card">
-        <h2>Proposed Solution</h2>
-        <p>
-            An AI-powered image classification model is trained on
-            waste images. When a user uploads an image, the system
-            predicts the waste category and suggests proper disposal
-            methods.
-        </p>
-    </div>
-</section>
+            <!-- Loading Indicator -->
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p style="margin-top:15px;color:#666;">Analyzing image...</p>
+            </div>
 
-<section id="cycle">
-    <div class="card">
-        <h2>AI Project Cycle</h2>
+            <!-- Status Messages -->
+            <div class="status-message info" id="statusInfo"></div>
+            <div class="status-message error" id="statusError"></div>
+            <div class="status-message success" id="statusSuccess"></div>
 
-        <h3>1. Problem Scoping</h3>
-        <p>Identify the issue of improper waste management.</p>
+            <!-- Classification Results -->
+            <div id="classificationResults"></div>
+        </div>
+    </section>
 
-        <h3>2. Data Acquisition</h3>
-        <p>Collect images of paper, plastic, glass, metal, and organic waste.</p>
+    <section id="about">
+        <div class="card">
+            <h2>About the Project</h2>
+            <p>
+                AI Waste Classification is an intelligent system that uses
+                Artificial Intelligence and Computer Vision to identify
+                different types of waste such as plastic, paper, metal,
+                glass, and organic waste. The system helps improve waste
+                segregation and supports environmental sustainability.
+                <br><br>
+                <strong>Now with real-time camera access!</strong> Analyze waste instantly using your device's camera or upload images for classification.
+            </p>
+        </div>
+    </section>
 
-        <h3>3. Data Exploration</h3>
-        <p>Analyze image quality and remove duplicate or blurry images.</p>
+    <section id="problem">
+        <div class="card">
+            <h2>Problem Statement</h2>
+            <p>
+                Improper waste segregation leads to pollution, health
+                hazards, and inefficient recycling. Manual sorting is
+                time-consuming and prone to errors. Real-time detection can
+                significantly improve waste management efficiency.
+            </p>
+        </div>
+    </section>
 
-        <h3>4. Modelling</h3>
-        <p>Train an AI model using image classification techniques.</p>
+    <section id="solution">
+        <div class="card">
+            <h2>Proposed Solution</h2>
+            <p>
+                An AI-powered image classification model is trained on
+                waste images. Using the camera or uploaded images, the system
+                predicts the waste category and suggests proper disposal
+                methods with real-time analysis capabilities.
+            </p>
+        </div>
+    </section>
 
-        <h3>5. Evaluation</h3>
-        <p>Measure model accuracy and improve performance.</p>
-    </div>
-</section>
+    <section id="cycle">
+        <div class="card">
+            <h2>AI Project Cycle</h2>
 
-<section id="future">
-    <div class="card">
-        <h2>Future Enhancements</h2>
-        <ul>
-            <li>Smart dustbin integration</li>
-            <li>Real-time camera detection</li>
-            <li>Mobile application support</li>
-            <li>Voice-guided waste disposal</li>
-            <li>IoT-enabled waste monitoring</li>
-        </ul>
-    </div>
-</section>
+            <h3>1. Problem Scoping</h3>
+            <p>Identify the issue of improper waste management.</p>
 
-<section>
-    <div class="card">
-        <h2>Conclusion</h2>
-        <p>
-            <span class="highlight">AI Waste Classification</span>
-            can improve waste segregation, increase recycling efficiency,
-            and contribute to a cleaner and greener environment. It
-            demonstrates how Artificial Intelligence can solve real-world
-            environmental problems.
-        </p>
-    </div>
-</section>
+            <h3>2. Data Acquisition</h3>
+            <p>Collect images of paper, plastic, glass, metal, and organic waste.</p>
+
+            <h3>3. Data Exploration</h3>
+            <p>Analyze image quality and remove duplicate or blurry images.</p>
+
+            <h3>4. Modelling</h3>
+            <p>Train an AI model using image classification techniques like CNN, ResNet, or MobileNet.</p>
+
+            <h3>5. Evaluation</h3>
+            <p>Measure model accuracy and improve performance with real-time testing.</p>
+        </div>
+    </section>
+
+    <section id="future">
+        <div class="card">
+            <h2>Future Enhancements</h2>
+            <ul>
+                <li>🤖 Integration with ML models (TensorFlow.js, ONNX)</li>
+                <li>📱 Smart dustbin integration & IoT connectivity</li>
+                <li>🔄 Real-time continuous stream processing</li>
+                <li>🎤 Voice-guided waste disposal instructions</li>
+                <li>📊 Analytics dashboard & statistics</li>
+                <li>🌍 Multi-language support</li>
+                <li>🔐 Edge processing for privacy</li>
+                <li>💾 History & classification records</li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <div class="card">
+            <h2>Conclusion</h2>
+            <p>
+                <span class="highlight">AI Waste Classification</span>
+                can improve waste segregation, increase recycling efficiency,
+                and contribute to a cleaner and greener environment. With real-time
+                camera capabilities, it demonstrates how Artificial Intelligence 
+                can solve real-world environmental problems effectively.
+            </p>
+        </div>
+    </section>
+</main>
 
 <footer>
     <p>© 2026 AI Waste Classification Portfolio Project</p>
+    <p>Made with ♻️ for a sustainable future</p>
 </footer>
+
+<script>
+    // Camera & Classification Functions
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let stream = null;
+
+    // Waste Classification Database
+    const wasteDatabase = {
+        'plastic': {
+            name: 'Plastic Waste',
+            icon: '♻️',
+            disposal: 'Place in yellow recycling bin. Rinse before recycling. Do not include plastic bags.',
+            tips: ['Clean and dry plastic items', 'Remove caps and labels', 'Flatten to save space']
+        },
+        'paper': {
+            name: 'Paper & Cardboard',
+            icon: '📄',
+            disposal: 'Place in blue recycling bin. Keep dry and flatten cardboard boxes.',
+            tips: ['Remove plastic windows from envelopes', 'Avoid wet or greasy paper', 'Flatten boxes']
+        },
+        'metal': {
+            name: 'Metal & Aluminum',
+            icon: '🥫',
+            disposal: 'Place in blue recycling bin. Aluminum and steel cans are highly recyclable.',
+            tips: ['Rinse cans thoroughly', 'Crush to save space', 'Remove plastic rings']
+        },
+        'glass': {
+            name: 'Glass Waste',
+            icon: '🍾',
+            disposal: 'Place in green or clear glass bin. Separate by color if required.',
+            tips: ['Remove caps and lids', 'Rinse containers', 'Check for broken edges']
+        },
+        'organic': {
+            name: 'Organic/Food Waste',
+            icon: '🌱',
+            disposal: 'Place in brown compost bin. Can be composted or sent to biogas facilities.',
+            tips: ['Remove non-organic items', 'Chop into smaller pieces', 'Drain excess liquid']
+        },
+        'e-waste': {
+            name: 'Electronic Waste',
+            icon: '🔌',
+            disposal: 'Take to electronic waste recycling center. Never throw in regular bins.',
+            tips: ['Keep away from moisture', 'Store safely', 'Check local e-waste facilities']
+        }
+    };
+
+    // Start Camera
+    async function startCamera() {
+        try {
+            document.getElementById('cameraAlert').style.display = 'none';
+            stream = await navigator.mediaDevices.getUserMedia({
+                video: {facingMode: 'environment'},
+                audio: false
+            });
+            video.srcObject = stream;
+            
+            document.getElementById('startCameraBtn').style.display = 'none';
+            document.getElementById('captureCameraBtn').style.display = 'inline-block';
+            document.getElementById('stopCameraBtn').style.display = 'inline-block';
+            
+            showStatus('Camera started successfully!', 'success');
+        } catch (error) {
+            console.error('Camera access denied:', error);
+            document.getElementById('cameraAlert').style.display = 'block';
+            showStatus('Camera access denied. Please check your permissions.', 'error');
+        }
+    }
+
+    // Capture Camera Frame
+    function captureCamera() {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        ctx.drawImage(video, 0, 0);
+        
+        const imageData = canvas.toDataURL('image/jpeg');
+        analyzeWaste(imageData, 'camera');
+    }
+
+    // Stop Camera
+    function stopCamera() {
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+        }
+        video.srcObject = null;
+        
+        document.getElementById('startCameraBtn').style.display = 'inline-block';
+        document.getElementById('captureCameraBtn').style.display = 'none';
+        document.getElementById('stopCameraBtn').style.display = 'none';
+        
+        showStatus('Camera stopped.', 'info');
+    }
+
+    // Handle File Upload
+    function handleFileUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const uploadedImage = document.getElementById('uploadedImage');
+            uploadedImage.src = e.target.result;
+            uploadedImage.style.display = 'block';
+            
+            analyzeWaste(e.target.result, 'upload');
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // Analyze Waste (Simulated AI Classification)
+    function analyzeWaste(imageData, source) {
+        document.getElementById('loading').style.display = 'block';
+        
+        // Simulate API call delay
+        setTimeout(() => {
+            // Mock AI Classification - Replace with real model
+            const wasteTypes = Object.keys(wasteDatabase);
+            const mockClassification = generateMockClassification(wasteTypes);
+            
+            displayResults(mockClassification);
+            document.getElementById('loading').style.display = 'none';
+            showStatus('Classification complete!', 'success');
+        }, 2000);
+    }
+
+    // Generate Mock Classification Results
+    function generateMockClassification(wasteTypes) {
+        return wasteTypes.map(type => ({
+            type: type,
+            confidence: Math.floor(Math.random() * 40) + 50 // 50-90%
+        })).sort((a, b) => b.confidence - a.confidence);
+    }
+
+    // Display Results
+    function displayResults(results) {
+        const resultsDiv = document.getElementById('classificationResults');
+        const topResult = results[0];
+        const wasteInfo = wasteDatabase[topResult.type];
+        
+        let html = `
+            <div class="result-box success">
+                <h3>✅ Classification Result</h3>
+                <div class="waste-classification">
+                    <div class="waste-item" style="border-left-color:#10b981;">
+                        <strong>${wasteInfo.icon} Detected: ${wasteInfo.name}</strong>
+                        <p style="margin-top:8px;">Confidence: ${topResult.confidence}%</p>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width:${topResult.confidence}%"></div>
+                        </div>
+                    </div>
+        `;
+        
+        // Disposal Instructions
+        html += `
+                    <div class="disposal-info">
+                        <h4>♻️ Disposal Instructions</h4>
+                        <p>${wasteInfo.disposal}</p>
+                        <h4 style="margin-top:12px;">💡 Tips:</h4>
+                        <ul style="margin-left:20px;">
+        `;
+        
+        wasteInfo.tips.forEach(tip => {
+            html += `<li>${tip}</li>`;
+        });
+        
+        html += `
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="result-box">
+                <h3>🔍 All Classifications</h3>
+                <div class="waste-classification">
+        `;
+        
+        results.forEach(result => {
+            const info = wasteDatabase[result.type];
+            html += `
+                    <div class="waste-item">
+                        <strong>${info.icon} ${info.name}</strong>
+                        <p>Confidence: ${result.confidence}%</p>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width:${result.confidence}%"></div>
+                        </div>
+                    </div>
+            `;
+        });
+        
+        html += `
+                </div>
+            </div>
+        `;
+        
+        resultsDiv.innerHTML = html;
+    }
+
+    // Status Messages
+    function showStatus(message, type) {
+        const infoEl = document.getElementById('statusInfo');
+        const errorEl = document.getElementById('statusError');
+        const successEl = document.getElementById('statusSuccess');
+        
+        // Clear all
+        infoEl.style.display = 'none';
+        errorEl.style.display = 'none';
+        successEl.style.display = 'none';
+        
+        if (type === 'info') {
+            infoEl.textContent = message;
+            infoEl.style.display = 'block';
+        } else if (type === 'error') {
+            errorEl.textContent = message;
+            errorEl.style.display = 'block';
+        } else if (type === 'success') {
+            successEl.textContent = message;
+            successEl.style.display = 'block';
+        }
+    }
+
+    // Initialize
+    console.log('Waste Classification System Ready!');
+</script>
 
 </body>
 </html>
