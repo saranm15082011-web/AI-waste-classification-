@@ -13,106 +13,235 @@
         margin:0;
         padding:0;
         box-sizing:border-box;
-        font-family:Arial, sans-serif;
+        font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
+    /* Animated Background Gradient */
     body{
-        background:#f4f7f9;
+        background: linear-gradient(-45deg, #0f766e, #14b8a6, #06b6d4, #10b981);
+        background-size: 400% 400%;
+        animation: gradient 15s ease infinite;
         color:#333;
         line-height:1.6;
+        position:relative;
+        min-height:100vh;
+    }
+
+    @keyframes gradient {
+        0%{background-position: 0% 50%;}
+        50%{background-position: 100% 50%;}
+        100%{background-position: 0% 50%;}
+    }
+
+    /* Floating Waste Icons Background */
+    body::before {
+        content: '♻️ 🌱 🔌 🥫 📄 🍾 ♻️ 🌱 🔌 🥫 📄 🍾 ♻️ 🌱 🔌 🥫 📄 🍾';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        font-size: 80px;
+        opacity: 0.03;
+        pointer-events: none;
+        z-index: -1;
+        overflow: hidden;
+        word-wrap: break-word;
+        animation: float 20s linear infinite;
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0px) rotate(0deg); }
+        100% { transform: translateY(-100%) rotate(360deg); }
+    }
+
+    /* Geometric Pattern Overlay */
+    body::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+            repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.05) 35px, rgba(255,255,255,.05) 70px),
+            repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(255,255,255,.03) 35px, rgba(255,255,255,.03) 70px);
+        pointer-events: none;
+        z-index: -1;
     }
 
     header{
-        background:linear-gradient(135deg,#0f766e,#14b8a6);
+        background: linear-gradient(135deg, rgba(15, 118, 110, 0.95), rgba(20, 184, 166, 0.95));
+        backdrop-filter: blur(10px);
         color:white;
         text-align:center;
         padding:60px 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        position:relative;
+        overflow:hidden;
+    }
+
+    header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        animation: shimmer 3s infinite;
+        z-index: -1;
+    }
+
+    @keyframes shimmer {
+        0% { left: -100%; }
+        100% { left: 100%; }
     }
 
     header h1{
         font-size:3rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        letter-spacing: 1px;
     }
 
     header p{
         margin-top:10px;
         font-size:1.2rem;
+        opacity: 0.95;
     }
 
     nav{
-        background:#0f172a;
+        background: linear-gradient(90deg, rgba(15, 23, 42, 0.95), rgba(20, 184, 166, 0.1));
+        backdrop-filter: blur(15px);
         padding:15px;
         text-align:center;
         display:flex;
         flex-wrap:wrap;
         justify-content:center;
         gap:10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        border-top: 1px solid rgba(255,255,255,0.1);
+        border-bottom: 1px solid rgba(255,255,255,0.1);
     }
 
     nav a{
         color:white;
         text-decoration:none;
-        padding:8px 16px;
-        font-weight:bold;
-        border-radius:4px;
-        transition:background-color 0.3s ease;
+        padding:10px 18px;
+        font-weight:600;
+        border-radius:6px;
+        transition: all 0.3s ease;
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
     }
 
     nav a:hover,
     nav a:focus{
-        background-color:#14b8a6;
+        background: linear-gradient(135deg, #14b8a6, #0f766e);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(20, 184, 166, 0.4);
     }
 
     main{
         max-width:1200px;
         margin:0 auto;
+        position:relative;
+        z-index: 1;
     }
 
     section{
         padding:50px 10%;
     }
 
-    .card{
-        background:white;
-        padding:25px;
-        margin:20px 0;
-        border-radius:12px;
-        box-shadow:0 2px 10px rgba(0,0,0,0.1);
-        transition:box-shadow 0.3s ease;
+    section:nth-child(odd) {
+        background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(20,184,166,0.05));
     }
 
-    .card:hover{
-        box-shadow:0 4px 20px rgba(0,0,0,0.15);
+    section:nth-child(even) {
+        background: linear-gradient(135deg, rgba(15,118,110,0.03), rgba(255,255,255,0.02));
+    }
+
+    .card{
+        background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85));
+        backdrop-filter: blur(10px);
+        padding:30px;
+        margin:20px 0;
+        border-radius:16px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        border: 1px solid rgba(255,255,255,0.5);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position:relative;
+        overflow:hidden;
+    }
+
+    .card::before {
+        content: '';
+        position: absolute;
+        top: -100%;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, transparent, rgba(20,184,166,0.1), transparent);
+        transition: all 0.6s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 16px 48px rgba(20,184,166,0.2);
+        border-color: rgba(20,184,166,0.3);
+    }
+
+    .card:hover::before {
+        top: 100%;
     }
 
     h2{
         color:#0f766e;
         margin-bottom:15px;
+        font-size: 1.8rem;
+        background: linear-gradient(135deg, #0f766e, #14b8a6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
 
     h3{
         color:#0f766e;
         margin-top:20px;
         margin-bottom:10px;
+        font-size: 1.1rem;
     }
 
-    ul{
+    ul, ol{
         padding-left:20px;
     }
 
     li{
-        margin-bottom:8px;
+        margin-bottom:10px;
+        color: #555;
     }
 
     footer{
-        background:#0f172a;
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(20, 184, 166, 0.1));
+        backdrop-filter: blur(15px);
         color:white;
         text-align:center;
-        padding:20px;
-        margin-top:30px;
+        padding:30px 20px;
+        margin-top:50px;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    footer p {
+        margin: 8px 0;
+        opacity: 0.9;
     }
 
     .highlight{
-        color:#14b8a6;
+        background: linear-gradient(135deg, #14b8a6, #0f766e);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
         font-weight:bold;
     }
 
@@ -131,6 +260,13 @@
         max-width:500px;
     }
 
+    .camera-section h3,
+    .upload-section h3 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
     .upload-section{
         flex:1;
         min-width:300px;
@@ -144,6 +280,8 @@
         background:#000;
         display:block;
         margin-bottom:15px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        border: 2px solid rgba(20,184,166,0.3);
     }
 
     canvas{
@@ -164,37 +302,43 @@
         font-size:1rem;
         font-weight:bold;
         cursor:pointer;
-        transition:all 0.3s ease;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
     }
 
     .btn-primary{
-        background:#14b8a6;
+        background: linear-gradient(135deg, #14b8a6, #0f766e);
         color:white;
+        box-shadow: 0 4px 12px rgba(20,184,166,0.3);
     }
 
     .btn-primary:hover,
     .btn-primary:focus{
-        background:#0f766e;
-        outline:2px solid #14b8a6;
-        outline-offset:2px;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(20,184,166,0.5);
+        border-color: #14b8a6;
     }
 
     .btn-danger{
-        background:#ef4444;
+        background: linear-gradient(135deg, #ef4444, #dc2626);
         color:white;
+        box-shadow: 0 4px 12px rgba(239,68,68,0.3);
     }
 
     .btn-danger:hover{
-        background:#dc2626;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(239,68,68,0.5);
     }
 
     .btn-secondary{
-        background:#64748b;
+        background: linear-gradient(135deg, #64748b, #475569);
         color:white;
+        box-shadow: 0 4px 12px rgba(100,116,139,0.3);
     }
 
     .btn-secondary:hover{
-        background:#475569;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(100,116,139,0.5);
     }
 
     .file-input-wrapper{
@@ -210,16 +354,18 @@
     .file-label{
         display:block;
         padding:12px 24px;
-        background:#14b8a6;
+        background: linear-gradient(135deg, #14b8a6, #0f766e);
         color:white;
         border-radius:8px;
         font-weight:bold;
         cursor:pointer;
-        transition:background 0.3s ease;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(20,184,166,0.3);
     }
 
     .file-label:hover{
-        background:#0f766e;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(20,184,166,0.5);
     }
 
     .preview-img{
@@ -227,24 +373,31 @@
         height:auto;
         border-radius:12px;
         margin-bottom:15px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        border: 2px solid rgba(20,184,166,0.3);
     }
 
     .result-box{
-        background:#e0f2f1;
+        background: linear-gradient(135deg, rgba(224,242,241,0.9), rgba(176,245,240,0.7));
+        backdrop-filter: blur(10px);
         border-left:5px solid #14b8a6;
         padding:20px;
-        border-radius:8px;
+        border-radius:12px;
         margin-top:20px;
+        box-shadow: 0 8px 24px rgba(20,184,166,0.1);
+        border: 1px solid rgba(20,184,166,0.3);
     }
 
     .result-box.error{
-        background:#fecaca;
+        background: linear-gradient(135deg, rgba(254,202,202,0.9), rgba(254,165,165,0.7));
         border-left-color:#ef4444;
+        border-color: rgba(239,68,68,0.3);
     }
 
     .result-box.success{
-        background:#d1fae5;
+        background: linear-gradient(135deg, rgba(209,250,229,0.9), rgba(167,243,208,0.7));
         border-left-color:#10b981;
+        border-color: rgba(16,185,129,0.3);
     }
 
     .waste-classification{
@@ -252,59 +405,81 @@
     }
 
     .waste-item{
-        background:#f9fafb;
+        background: linear-gradient(135deg, rgba(249,250,251,0.8), rgba(243,244,246,0.6));
+        backdrop-filter: blur(5px);
         padding:15px;
         margin:10px 0;
-        border-radius:8px;
+        border-radius:10px;
         border-left:4px solid #14b8a6;
+        border: 1px solid rgba(20,184,166,0.2);
+        transition: all 0.3s ease;
+    }
+
+    .waste-item:hover {
+        transform: translateX(4px);
+        box-shadow: 0 4px 12px rgba(20,184,166,0.1);
     }
 
     .waste-item strong{
         color:#0f766e;
+        font-size: 1.05rem;
     }
 
     .confidence-bar{
         width:100%;
-        height:20px;
-        background:#e5e7eb;
-        border-radius:10px;
+        height:24px;
+        background: linear-gradient(90deg, rgba(229,231,235,0.5), rgba(209,213,219,0.5));
+        border-radius:12px;
         overflow:hidden;
-        margin-top:8px;
+        margin-top:10px;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
     }
 
     .confidence-fill{
         height:100%;
-        background:linear-gradient(90deg, #14b8a6, #0f766e);
+        background: linear-gradient(90deg, #14b8a6, #0f766e, #06b6d4);
+        background-size: 200% 100%;
+        animation: gradient-shift 2s ease infinite;
         transition:width 0.3s ease;
+        border-radius:12px;
+    }
+
+    @keyframes gradient-shift {
+        0%, 100% { background-position: 0% center; }
+        50% { background-position: 100% center; }
     }
 
     .disposal-info{
-        background:#fffbeb;
+        background: linear-gradient(135deg, rgba(255,251,235,0.9), rgba(254,243,199,0.7));
         border-left:4px solid #f59e0b;
         padding:15px;
         margin-top:15px;
-        border-radius:8px;
+        border-radius:10px;
+        border: 1px solid rgba(245,158,11,0.3);
+        box-shadow: 0 4px 12px rgba(245,158,11,0.1);
     }
 
     .disposal-info h4{
         color:#d97706;
         margin-bottom:10px;
+        font-size: 1rem;
     }
 
     .loading{
         display:none;
         text-align:center;
-        padding:20px;
+        padding:30px 20px;
     }
 
     .spinner{
-        border:4px solid #e5e7eb;
+        border:4px solid rgba(229,231,235,0.5);
         border-top:4px solid #14b8a6;
         border-radius:50%;
-        width:40px;
-        height:40px;
+        width:50px;
+        height:50px;
         animation:spin 1s linear infinite;
         margin:0 auto;
+        box-shadow: 0 0 20px rgba(20,184,166,0.3);
     }
 
     @keyframes spin{
@@ -313,42 +488,54 @@
     }
 
     .status-message{
-        padding:15px;
+        padding:15px 20px;
         margin:15px 0;
-        border-radius:8px;
+        border-radius:10px;
         display:none;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.3);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     .status-message.info{
-        background:#dbeafe;
+        background: linear-gradient(135deg, rgba(219,234,254,0.9), rgba(191,219,254,0.7));
         color:#1e40af;
+        border-color: rgba(30,64,175,0.3);
         display:block;
     }
 
     .status-message.error{
-        background:#fecaca;
+        background: linear-gradient(135deg, rgba(254,202,202,0.9), rgba(254,165,165,0.7));
         color:#991b1b;
+        border-color: rgba(153,27,27,0.3);
         display:block;
     }
 
     .status-message.success{
-        background:#d1fae5;
+        background: linear-gradient(135deg, rgba(209,250,229,0.9), rgba(167,243,208,0.7));
         color:#065f46;
+        border-color: rgba(6,95,70,0.3);
         display:block;
     }
 
     .camera-permission-alert{
-        background:#fef08a;
+        background: linear-gradient(135deg, rgba(254,243,199,0.9), rgba(253,224,71,0.7));
         border-left:4px solid #eab308;
         padding:15px;
         margin:15px 0;
-        border-radius:8px;
+        border-radius:10px;
         display:none;
+        border: 1px solid rgba(234,179,8,0.3);
+        box-shadow: 0 4px 12px rgba(234,179,8,0.1);
     }
 
     @media (max-width:768px){
         header h1{
             font-size:2rem;
+        }
+
+        header {
+            padding: 40px 20px;
         }
 
         section{
@@ -368,6 +555,10 @@
             font-size:0.9rem;
             padding:10px 16px;
         }
+
+        .card {
+            padding: 20px;
+        }
     }
     </style>
 </head>
@@ -375,7 +566,7 @@
 <body>
 
 <header>
-    <h1>AI Waste Classification System</h1>
+    <h1>♻️ AI Waste Classification System</h1>
     <p>Real-time Waste Detection with AI & Computer Vision</p>
 </header>
 
@@ -397,7 +588,7 @@
             <div class="camera-container">
                 <!-- Camera Section -->
                 <div class="camera-section">
-                    <h3>Camera Detection</h3>
+                    <h3>📷 Camera Detection</h3>
                     <div class="camera-permission-alert" id="cameraAlert">
                         ⚠️ Camera access is required for this feature. Please allow camera permissions.
                     </div>
@@ -414,7 +605,7 @@
 
                 <!-- File Upload Section -->
                 <div class="upload-section">
-                    <h3>Upload Image</h3>
+                    <h3>📁 Upload Image</h3>
                     <p style="color:#666;margin-bottom:15px;font-size:0.95rem;">Or choose an image from your device</p>
                     
                     <div class="file-input-wrapper">
@@ -429,7 +620,7 @@
             <!-- Loading Indicator -->
             <div class="loading" id="loading">
                 <div class="spinner"></div>
-                <p style="margin-top:15px;color:#666;">Analyzing image...</p>
+                <p style="margin-top:15px;color:#666;font-weight:500;">Analyzing image...</p>
             </div>
 
             <!-- Status Messages -->
@@ -444,7 +635,7 @@
 
     <section id="about">
         <div class="card">
-            <h2>About the Project</h2>
+            <h2>🌍 About the Project</h2>
             <p>
                 AI Waste Classification is an intelligent system that uses
                 Artificial Intelligence and Computer Vision to identify
@@ -459,7 +650,7 @@
 
     <section id="problem">
         <div class="card">
-            <h2>Problem Statement</h2>
+            <h2>⚠️ Problem Statement</h2>
             <p>
                 Improper waste segregation leads to pollution, health
                 hazards, and inefficient recycling. Manual sorting is
@@ -471,7 +662,7 @@
 
     <section id="solution">
         <div class="card">
-            <h2>Proposed Solution</h2>
+            <h2>💡 Proposed Solution</h2>
             <p>
                 An AI-powered image classification model is trained on
                 waste images. Using the camera or uploaded images, the system
@@ -483,7 +674,7 @@
 
     <section id="cycle">
         <div class="card">
-            <h2>AI Project Cycle</h2>
+            <h2>🔄 AI Project Cycle</h2>
 
             <h3>1. Problem Scoping</h3>
             <p>Identify the issue of improper waste management.</p>
@@ -504,7 +695,7 @@
 
     <section id="future">
         <div class="card">
-            <h2>Future Enhancements</h2>
+            <h2>🚀 Future Enhancements</h2>
             <ul>
                 <li>🤖 Integration with ML models (TensorFlow.js, ONNX)</li>
                 <li>📱 Smart dustbin integration & IoT connectivity</li>
@@ -520,7 +711,7 @@
 
     <section>
         <div class="card">
-            <h2>Conclusion</h2>
+            <h2>✅ Conclusion</h2>
             <p>
                 <span class="highlight">AI Waste Classification</span>
                 can improve waste segregation, increase recycling efficiency,
